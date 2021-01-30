@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: UnLinked Image
+# key: img
+# --
+
+{::nomarkdown}
+  <img src="/assets/$1/$2" alt="$3">
+  <div class="image-caption">$3</div>
+{:/nomarkdown}

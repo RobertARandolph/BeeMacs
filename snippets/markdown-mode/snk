@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Blog Link
+# key: snk
+# --
+
+[${1:word}]({% post_url ${2:url} %})

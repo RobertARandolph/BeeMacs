@@ -1,0 +1,40 @@
+;; File Nav
+
+(use-package projectile
+  :config (projectile-mode +1)
+  :bind (:map projectile-mode-map
+	      ("C-x p" . 'projectile-command-map)))
+
+(use-package counsel-projectile
+  :config (counsel-projectile-mode)
+  :after counsel)
+
+(use-package ag
+             :config (setq ag-reuse-buffers 't))
+
+;; File management
+
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(require 'dired+)
+
+;; Dired-x is so much nicer!
+(add-hook 'dired-load-hook
+          (lambda ()
+            (load "dired-x")
+            ;; Set dired-x global variables here.  For example:
+            ;; (setq dired-guess-shell-gnutar "gtar")
+            ;; (setq dired-x-hands-off-my-keys nil)
+            ))
+(add-hook 'dired-mode-hook
+          (lambda ()
+            ;; Set dired-x buffer-local variables here.  For example:
+            ;; (dired-omit-mode 1)
+            ))
+(diredp-toggle-find-file-reuse-dir 1)
+
+;; Git
+
+(use-package magit
+  :config (add-hook 'after-save-hook 'magit-after-save-refresh-status t)
+  :bind ("C-x g" . 'magit-status))
+

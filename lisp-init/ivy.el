@@ -1,0 +1,30 @@
+(use-package ivy
+  ;:after company
+  :config (progn (ivy-mode 1)
+		 (setq ivy-use-virtual-buffers t)
+		 (setq enable-recursive-minibuffers t)
+		 (setq ivy-re-builders-alist '((swiper . ivy--regex)
+					       (t . ivy--regex-plus)
+					       (counsel-projectile . ivy--regex-fuzzy)))
+		 (ivy-set-actions 'counsel-rg
+				  '(("f"
+				     (lambda (x)
+				       (string-match ".*:" x)
+				       (kill-new (file-name-base (match-string 0 x))))
+				     "Copy file base"))))
+  :bind (("\C-s" . 'swiper)
+	 ("C-c C-r" . 'ivy-resume)
+	 ("<f6>" . 'ivy-resume)
+	 ("M-x" . 'counsel-M-x)
+	 ("C-x C-f" . 'counsel-find-file)
+	 ("<f2> f" . 'counsel-imenu)
+	 ("<f2> i" . 'counsel-info-lookup-symbol)
+	 ("<f2> u" . 'counsel-unicode-char)
+	 ("C-c p" . 'counsel-yank-pop)
+	 ("C-c g" . 'counsel-git)
+	 ("C-c j" . 'counsel-git-grep)
+	 ("C-c k" . 'counsel-rg)
+	 ("C-x l" . 'counsel-locate)
+	 ("C-S-o" . 'counsel-rhythmbox)
+	 :map minibuffer-local-map
+	 ("C-r" . 'counsel-minibuffer-history)))

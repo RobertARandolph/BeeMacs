@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: Muted Video
+# key: vdj
+# --
+
+{::nomarkdown}
+  <video autoplay loop muted class=\"gifvid">
+	<source src="/assets/${1:directory}/${2:url}.mp4" type="video/mp4">
+	Your browser does not support the video tag.
+  </video>
+  <div class="video-caption">${3:description}</div>
+{:/nomarkdown}

@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Linked image
+# key: lmg
+# --
+
+{::nomarkdown}
+  <a href="/assets/${1:directory}/${2:file}">
+    <img src="/assets/$1/Thumbnails/$2" alt="$3">
+  </a>
+  <div class="image-caption">$3 (Click for larger image)</div>
+{:/nomarkdown}
