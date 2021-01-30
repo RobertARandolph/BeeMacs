@@ -38,3 +38,14 @@
   :config (add-hook 'after-save-hook 'magit-after-save-refresh-status t)
   :bind ("C-x g" . 'magit-status))
 
+(use-package git-gutter
+  :config (progn
+            (git-gutter-mode +1)
+            (custom-set-variables
+             (set-face-background 'git-gutter:modified "yellow")
+             (set-face-foreground 'git-gutter:added "green")
+             (set-face-foreground 'git-gutter:deleted "red")
+             '(git-gutter:modified-sign "||") ;; two space
+             '(git-gutter:added-sign "++") ;; multiple character is OK
+             '(git-gutter:deleted-sign "--"))))
+
