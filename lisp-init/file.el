@@ -40,7 +40,7 @@
 
 (use-package git-gutter
   :config (progn
-            (git-gutter-mode +1)
+            (global-git-gutter-mode +1)
             (custom-set-variables
              (set-face-background 'git-gutter:modified "yellow")
              (set-face-foreground 'git-gutter:added "green")
