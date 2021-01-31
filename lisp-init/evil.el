@@ -65,7 +65,6 @@
     (insert mode)))
 
 (defun check-evil-state (&optional _)
-  (message "checking")
   (if (not (minibufferp))
       (cond
        ((eq evil-state 'normal) (write-mode "normal"))
