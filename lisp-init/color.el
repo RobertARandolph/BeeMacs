@@ -1,7 +1,7 @@
 ;; Colouring
 
 (use-package rainbow-delimiters
-  :hook prog-mode
+  :hook (prog-mode . rainbow-delimiters-mode)
   :custom-face (rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "Yellow"))))
   :custom-face (rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "Red"))))
   :custom-face (rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "plum1"))))
@@ -22,15 +22,6 @@
  '(hl-line ((t (:background "#1b1b1b"))))
  '(ido-first-match ((t (:foreground "IndianRed1" :weight bold))))
  '(ido-indicator ((t (:foreground "yellow1" :width condensed))))
- '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "Yellow"))))
- '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "Red"))))
- '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "plum1"))))
- '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "CadetBlue1"))))
- '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "Magenta"))))
- '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "Green"))))
- '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "aquamarine1"))))
- '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "wheat"))))
- '(rainbow-delimiters-depth-9-face ((t (:inherit rainbow-delimiters-base-face :foreground "White"))))
  '(show-paren-match ((t (:background "nil" :underline (:color foreground-color :style wave) :weight bold)))))
 
 ;; Theme

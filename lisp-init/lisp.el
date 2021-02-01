@@ -6,7 +6,7 @@
 
 (use-package lispyville
   :config (lispyville-set-key-theme
-	   '(operators
+	   '(opeaators
 	     c-w
 	     slurp/barf-cp
 	     commentary
