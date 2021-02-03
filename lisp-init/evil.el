@@ -27,9 +27,9 @@
 (use-package evil-snipe)
 
 ;; terminal support for evil cursors
-(unless (display-graphic-p)
-  (require 'evil-terminal-cursor-changer)
-  (evil-terminal-cursor-changer-activate)) ; or (etcc-on)
+(use-package evil-terminal-cursor-changer
+  :unless (display-graphic-p)
+  :config (evil-terminal-cursor-changer-activate)) ; or (etcc-on)
 
 (setq evil-motion-state-cursor 'box)  ; █
 (setq evil-visual-state-cursor 'box)  ; █
