@@ -1,0 +1,12 @@
+.DS_Store
+.stignore
+org-clock-save.el
+recentf
+projectile-bookmarks.eld
+history
+mode
+.org*
+auto-save-list*
+.emacs.desktop*
+elpa/*
+transient/*
