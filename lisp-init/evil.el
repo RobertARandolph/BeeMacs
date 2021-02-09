@@ -53,11 +53,6 @@
 (define-key evil-normal-state-map  (kbd "s-v") (kbd "\"+p"))
 (define-key evil-ex-search-keymap  (kbd "s-v") (kbd "C-r +"))
 
-;; Make it easier to see when in normal mode
-;; This is useful for me after a context switch out of emacs and back in.
-;; It also lets me see the normal mode cursor better
-(set-face-attribute 'hl-line nil :foreground nil :background "gray26")
-
 ;; Write current EVIL state. Used for Talon
 
 (defun write-mode (mode)
@@ -88,6 +83,7 @@
 (add-hook 'evil-insert-state-exit-hook
           (lambda ()
             (setq display-line-numbers 'relative)))
+
 (add-hook 'evil-insert-state-entry-hook
           (lambda ()
             (setq display-line-numbers t)))

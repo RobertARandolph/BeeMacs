@@ -18,8 +18,8 @@
 (global-auto-revert-mode 1)
 
 ;; Line Number stuff.
-(global-hl-line-mode 1)
 (global-linum-mode 0)
+(setq display-line-numbers t)
 
 ;; Allow narrowing. Turns anything into a "region based" command.
 (put 'narrow-to-region 'disabled nil)
