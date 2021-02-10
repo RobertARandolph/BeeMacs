@@ -1,14 +1,11 @@
 ;; LISP
-<<<<<<< HEAD
-=======
 
 ;; (add-to-list 'load-path "/Users/robertrandolph/Documents/Clojure/inf-clojure")
 ;; (use-package inf-clojure :hook clojure-mode)
 
-(use-package adjust-parens)
->>>>>>> 2cf51869cad77ccd3e5620ecb7dceef345ba56b4
-
-(use-package aggressive-indent)
+(use-package eglot
+  :config (progn (add-to-list 'eglot-server-programs '(clojure-mode . ("clojure-lsp")))
+                 (defun project-root (project) (car (project-roots project))))) ;; fix project-root issue with use-package
 
 (use-package lispyville
   :config (lispyville-set-key-theme
@@ -102,11 +99,14 @@
       "(str \"%1$s args: \"
             (or (some-> '%1$s resolve meta :arglists)
                 \"Not Found\"))\n")
+
+;; make inferior-lisp repl scroll on new output
+(setq comint-scroll-to-bottom-on-output t)
+
 (use-package flycheck-clj-kondo)
 
 (defun lisp-mode-hooks ()
-  (aggressive-indent-mode)
-  (adjust-parens-mode)
+  (electric-indent-mode)
   (electric-pair-mode))
 
 (add-hook 'lisp-mode-hook 'lisp-mode-hooks)

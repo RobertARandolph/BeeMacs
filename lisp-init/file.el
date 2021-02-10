@@ -32,6 +32,8 @@
             ))
 (diredp-toggle-find-file-reuse-dir 1)
 
+(setq dired-listing-switches "alGh")
+
 ;; Git
 
 (use-package magit

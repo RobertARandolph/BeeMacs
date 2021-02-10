@@ -53,6 +53,14 @@
 (define-key evil-normal-state-map  (kbd "s-v") (kbd "\"+p"))
 (define-key evil-ex-search-keymap  (kbd "s-v") (kbd "C-r +"))
 
+(evil-define-operator evil-eval (beg end)
+  "Eval the text"
+  :move-point nil
+  (save-excursion
+    (lisp-eval-region beg end)))
+
+(define-key evil-normal-state-map "go" 'evil-eval)
+
 ;; Write current EVIL state. Used for Talon
 
 (defun write-mode (mode)
