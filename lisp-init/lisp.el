@@ -1,6 +1,4 @@
- ;; LISP
-
-(use-package adjust-parens)
+;; LISP
 
 (use-package aggressive-indent)
 
