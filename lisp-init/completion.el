@@ -2,6 +2,7 @@
 (use-package company
   :bind (:map company-active-map
               ("<return>" . nil)
+              ("RET" . nil)
               ("<tab>" . #'company-complete-common-or-cycle)
               ("C-f" . #'company-complete-selection)
               ("C-n" . #'company-select-next)
@@ -18,4 +19,3 @@
             (setq company-minimum-prefix-length 2)
             (setq company-require-match 'never) ; Don't require match, so you can still move your cursor as expected.
             (setq company-tooltip-align-annotations t))) ; Align annotation to the right side.
-
