@@ -1,4 +1,12 @@
 ;; LISP
+<<<<<<< HEAD
+=======
+
+;; (add-to-list 'load-path "/Users/robertrandolph/Documents/Clojure/inf-clojure")
+;; (use-package inf-clojure :hook clojure-mode)
+
+(use-package adjust-parens)
+>>>>>>> 2cf51869cad77ccd3e5620ecb7dceef345ba56b4
 
 (use-package aggressive-indent)
 
@@ -77,7 +85,7 @@
 	    cb (curent-buffer))
     (cd dd)
     (add-to-list 'clj-repl-command-history cmd)
-    (if (boundp 'lisp-environment)
+    (if (boundp 'clj-environment)
         (let ((process-environment (append process-environment clj-environment)))
           (run-lisp cmd))
       (run-lisp cmd))
@@ -87,6 +95,13 @@
 (setq lisp-function-doc-command
       "(clojure.repl/doc %s)\n")
 
+(setq lisp-show-variable-documentation
+      "(clojure.repl/doc %s)\n")
+
+(setq lisp-arglist-command
+      "(str \"%1$s args: \"
+            (or (some-> '%1$s resolve meta :arglists)
+                \"Not Found\"))\n")
 (use-package flycheck-clj-kondo)
 
 (defun lisp-mode-hooks ()

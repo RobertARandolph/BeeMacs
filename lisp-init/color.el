@@ -19,7 +19,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(auto-dim-other-buffers-face ((t (:background "#222"))))
- '(hl-line ((t (:background "#1b1b1b"))))
  '(ido-first-match ((t (:foreground "IndianRed1" :weight bold))))
  '(ido-indicator ((t (:foreground "yellow1" :width condensed))))
  '(show-paren-match ((t (:background "nil" :underline (:color foreground-color :style wave) :weight bold)))))
@@ -35,6 +34,11 @@
 
 ;; Always hilight current line
 (global-hl-line-mode t)
+
+;; Make it easier to see when in normal mode
+;; This is useful for me after a context switch out of emacs and back in.
+;; It also lets me see the normal mode cursor better
+(set-face-attribute 'hl-line nil :foreground nil :background "gray26")
 
 ;; No wordwrapping
 (global-visual-line-mode nil)
