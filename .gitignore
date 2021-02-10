@@ -10,3 +10,11 @@ auto-save-list*
 .emacs.desktop*
 elpa/*
 transient/*
+ido.last*
+lisp/use-package/
+projectile.cache
+bookmarks
+sessionDesktop.el
+init.el~
+network-security.data
+tramp
