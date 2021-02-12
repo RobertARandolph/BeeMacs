@@ -3,9 +3,13 @@
 ;; (add-to-list 'load-path "/Users/robertrandolph/Documents/Clojure/inf-clojure")
 ;; (use-package inf-clojure :hook clojure-mode)
 
-(use-package eglot
-  :config (progn (add-to-list 'eglot-server-programs '(clojure-mode . ("clojure-lsp")))
-                 (defun project-root (project) (car (project-roots project))))) ;; fix project-root issue with use-package
+
+;; Slow, I don't yet understand value over plain clj-kondo
+;;(use-package eglot
+;;  :config (progn (add-to-list 'eglot-server-programs '(clojure-mode . ("clojure-lsp")))
+;;                 (defun project-root (project) (car (project-roots project))))) ;; fix project-root issue with use-package
+
+(use-package flycheck-clj-kondo)
 
 (use-package lispyville
   :config (lispyville-set-key-theme
@@ -33,6 +37,7 @@
 
 (use-package clojure-mode
   :config (progn
+            (require 'flycheck-clj-kondo)
             (define-key clojure-mode-map (kbd "C-z") 'run-clojure-no-prompt)
             (define-key clojure-mode-map (kbd "C-c C-z") 'run-clojure)
             (define-key clojure-mode-map (kbd "C-M-x") 'lisp-eval-defun) ;; primary eval command
