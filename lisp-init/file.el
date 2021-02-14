@@ -25,14 +25,16 @@
             ;; (setq dired-guess-shell-gnutar "gtar")
             ;; (setq dired-x-hands-off-my-keys nil)
             ))
+
 (add-hook 'dired-mode-hook
           (lambda ()
             ;; Set dired-x buffer-local variables here.  For example:
             ;; (dired-omit-mode 1)
+            (dired-hide-details-mode 0)
             ))
 (diredp-toggle-find-file-reuse-dir 1)
 
-(setq dired-listing-switches "alGh")
+(setq dired-listing-switches "-alGh")
 
 ;; Git
 
