@@ -18,3 +18,4 @@ sessionDesktop.el
 init.el~
 network-security.data
 tramp
+eln-cache/
