@@ -57,9 +57,10 @@
   "Eval the text"
   :move-point nil
   (save-excursion
-    (if (or (bound-and-true-p lisp-mode)
-            (bound-and-true-p clojure-mode))
-        (lisp-eval-region beg end)
+    (if (or (eq major-mode 'lisp-mode)
+            (eq major-mode 'clojure-mode))
+       ;;(lisp-eval-region beg end) ;; for using inferior-lisp
+        (inf-clojure-eval-region beg end) 
       (eval-region beg end t))))
 
 (define-key evil-normal-state-map "go" 'evil-eval)
