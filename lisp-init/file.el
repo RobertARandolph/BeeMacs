@@ -3,14 +3,15 @@
 (use-package projectile
   :config (projectile-mode +1)
   :bind (:map projectile-mode-map
-	      ("C-x p" . 'projectile-command-map)))
+              ("s-p" . 'projectile-command-map)
+              ("C-x p" . 'projectile-command-map)))
 
 (use-package counsel-projectile
   :config (counsel-projectile-mode)
   :after counsel)
 
 (use-package ag
-             :config (setq ag-reuse-buffers 't))
+  :config (setq ag-reuse-buffers 't))
 
 ;; File management
 

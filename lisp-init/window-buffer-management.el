@@ -1,7 +1,8 @@
 (use-package ace-window
   :config (progn (setq aw-keys '(?n ?t ?e ?s ?i ?r ?o ?a ?l ?p))
                (setq aw-dispatch-always t))
-  :bind ("C-x o" . 'ace-window))
+  :bind (("s-o" . 'ace-window)
+         ("C-x o" . 'ace-window)))
  
 (use-package resize-window
   :bind (("C-c w" . 'resize-window)))

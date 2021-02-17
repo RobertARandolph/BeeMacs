@@ -16,6 +16,8 @@
             (define-key evil-motion-state-map (kbd "s-F") #'avy-goto-word-0)
             (setq avy-keys '(?n ?t ?e ?s ?i ?r ?o ?a))))
 
+(require 'avy)
+
 (defun avy-goto-parens ()
   (interactive)
   (let ((avy-command this-command))   ; for look up in avy-orders-alist
