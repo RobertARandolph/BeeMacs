@@ -41,7 +41,7 @@
 
 (use-package magit
   :config (add-hook 'after-save-hook 'magit-after-save-refresh-status t)
-  :bind ("C-x g" . 'magit-status))
+  :bind ("s-g" . 'magit-status))
 
 (use-package git-gutter
   :config (progn
