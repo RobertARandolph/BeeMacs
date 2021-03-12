@@ -7,7 +7,6 @@
   (package-initialize)
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
-  (add-to-list 'load-path "~/.emacs.d/lisp/use-package")
   (require 'use-package))
 
 ;; always ensure!
@@ -33,11 +32,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(git-gutter:added-sign "++")
  '(git-gutter:deleted-sign "--")
  '(git-gutter:modified-sign "||")
  '(nil nil t)
  '(package-selected-packages
-   '(which-key inf-clojure yasnippet company visual-regexp-steroids resize-window rainbow-delimiters magit lispyville key-chord flycheck-clj-kondo exec-path-from-shell evil-surround evil-snipe evil-matchit emmet-mode dumb-jump counsel-projectile clj-refactor bind-key auto-dim-other-buffers aggressive-indent ag adjust-parens)))
+   '(which-key yasnippet company visual-regexp-steroids resize-window rainbow-delimiters magit lispyville key-chord flycheck-clj-kondo exec-path-from-shell evil-surround evil-snipe evil-matchit emmet-mode dumb-jump counsel-projectile clj-refactor bind-key auto-dim-other-buffers aggressive-indent ag adjust-parens)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
