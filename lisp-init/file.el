@@ -1,5 +1,7 @@
 ;; File Nav
 
+(use-package wgrep)
+
 (use-package projectile
   :config (projectile-mode +1)
   :bind (:map projectile-mode-map
