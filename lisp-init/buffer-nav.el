@@ -32,12 +32,12 @@
 
 (global-set-key (kbd "s-p") 'avy-goto-parens)
 
-(use-package which-key
-  :after evil
-  :init (which-key-mode)
-  :config (progn
-            (setq which-key-side-window-max-height 0.5)
-            (setq which-key-sort-order 'which-key-description-order)
-            (setq which-key-idle-delay 0.7)
-            (setq which-key-show-operator-state-maps t)
-            (setq which-key-allow-evil-operators t)))
+(comment (use-package which-key
+   :after evil
+   :init (which-key-mode)
+   :config (progn
+             (setq which-key-side-window-max-height 0.5)
+             (setq which-key-sort-order 'which-key-description-order)
+             (setq which-key-idle-delay 0.7)
+             (setq which-key-show-operator-state-maps t)
+             (setq which-key-allow-evil-operators t))))

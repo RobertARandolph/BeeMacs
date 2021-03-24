@@ -25,7 +25,7 @@
 
 (load-directory "~/.emacs.d/lisp-init")
 
-(require 'which-key)
+;(require 'which-key)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -37,7 +37,7 @@
  '(git-gutter:modified-sign "||")
  '(nil nil t)
  '(package-selected-packages
-   '(which-key yasnippet company visual-regexp-steroids resize-window rainbow-delimiters magit lispyville key-chord flycheck-clj-kondo exec-path-from-shell evil-surround evil-snipe evil-matchit emmet-mode dumb-jump counsel-projectile clj-refactor bind-key auto-dim-other-buffers aggressive-indent ag adjust-parens)))
+   '(wgrep which-key yasnippet company visual-regexp-steroids resize-window rainbow-delimiters magit lispyville key-chord flycheck-clj-kondo exec-path-from-shell evil-surround evil-snipe evil-matchit emmet-mode dumb-jump counsel-projectile clj-refactor bind-key auto-dim-other-buffers aggressive-indent ag adjust-parens)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
