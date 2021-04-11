@@ -2,7 +2,6 @@
 
 ;; (add-to-list 'load-path "/Users/robertrandolph/Documents/Clojure/inf-clojure")
 (use-package inf-clojure
-  :hook clojure-mode
   :config (progn
             (define-key clojure-mode-map (kbd "C-M-x") 'inf-clojure-eval-defun) ;; primary eval command
             (define-key clojure-mode-map (kbd "C-c C-e") 'inf-clojure-eval-defun)
@@ -30,8 +29,6 @@
                  (setq inf-clojure-startup-forms '((clojure . "clojure")
                                                    (clojure . "clojure -A:dev")))
                  (advice-add #'inf-clojure :after '(lambda (_) (setq comint-scroll-to-bottom-on-output t)))))
-
-
 
 ;; Slow, I don't yet understand value over plain clj-kondo
 ;;(use-package eglot
@@ -64,9 +61,19 @@
     (while (< (point) (point-max))
       (lisp-eval-form-and-next))))
 
+(use-package flycheck-clj-kondo)
+
+(defun lisp-mode-hooks ()
+  (electric-indent-mode)
+  (electric-pair-mode))
+
+(add-hook 'lisp-mode-hook 'lisp-mode-hooks)
+(add-hook 'lisp-interaction-mode-hook 'lisp-mode-hooks)
+(add-hook 'emacs-lisp-mode-hook 'lisp-mode-hooks)
+
 (use-package clojure-mode
   :config (progn
-            (require 'flycheck-clj-kondo)
+            ;;(require 'flycheck-clj-kondo)
             ;;(define-key clojure-mode-map (kbd "C-z") 'run-clojure-no-prompt)
             ;;(define-key clojure-mode-map (kbd "C-c C-z") 'run-clojure)
             ;;(define-key clojure-mode-map (kbd "C-M-x") 'lisp-eval-defun) ;; primary eval command
@@ -169,12 +176,3 @@
  (setq comint-scroll-to-bottom-on-output t)
  )
 
-(use-package flycheck-clj-kondo)
-
-(defun lisp-mode-hooks ()
-  (electric-indent-mode)
-  (electric-pair-mode))
-
-(add-hook 'lisp-mode-hook 'lisp-mode-hooks)
-(add-hook 'lisp-interaction-mode-hook 'lisp-mode-hooks)
-(add-hook 'emacs-lisp-mode-hook 'lisp-mode-hooks)
