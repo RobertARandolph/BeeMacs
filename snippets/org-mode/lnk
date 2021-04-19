@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Org Mode Link
+# key: lnk
+# --
+
+[[$2][$1]]$0
