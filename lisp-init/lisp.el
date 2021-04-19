@@ -176,3 +176,123 @@
  (setq comint-scroll-to-bottom-on-output t)
  )
 
+<<<<<<< HEAD
+=======
+(use-package flycheck-clj-kondo)
+
+(defun lisp-mode-hooks ()
+  (electric-indent-mode)
+  (electric-pair-mode))
+
+(add-hook 'lisp-mode-hook 'lisp-mode-hooks)
+(add-hook 'lisp-interaction-mode-hook 'lisp-mode-hooks)
+(add-hook 'emacs-lisp-mode-hook 'lisp-mode-hooks)
+
+(defun clj-do-defun (do-string do-region)
+  "Send the current defun to the inferior Lisp process.
+The actually processing is done by `do-string' and `do-region'
+ which determine whether the code is compiled before evaluation.
+DEFVAR forms reset the variables to the init values. Ignores (comment) forms."
+  (save-excursion
+    ;; Find the end of the defun this way to avoid having the region
+    ;; possibly end with a comment (it there'a a comment after the
+    ;; final parenthesis).
+    (beginning-of-defun)
+    (forward-sexp)
+    (let ((end (point))
+          (start ())
+          (case-fold-search t))
+      (beginning-of-defun)
+      (when (looking-at "(comment")
+        (down-list)
+        (down-list)
+        (backward-char)
+        (forward-sexp)
+        (setq end (point))
+        (backward-sexp))
+        (funcall do-region (point) end))))
+
+(setq ignored-forms '("comment" "+"))
+
+(defun check-ignored-forms (forms)
+  (interactive "P")
+  (let ((ret nil))
+    (dolist (form ignored-forms)
+      (print (format "Looking at %s is %s" (concat "(" form) (looking-at (concat "(" form))))
+      (when (looking-at (concat "(" form))
+        (setq ret 't)))
+    (print ret)
+    ret))
+
+
+(dolist (form ignored-forms)
+        (print form))
+
+(defun clj-do-defun (do-string do-region)
+  "Send the current defun to the inferior Lisp process.
+The actually processing is done by `do-string' and `do-region'
+ which determine whether the code is compiled before evaluation.
+DEFVAR forms reset the variables to the init values. Ignores (comment) forms."
+  (save-excursion
+    ;; if there's a form after the cursor, jump into it before parsing.
+    ;; lisp-eval-defun doesn't do this. Unsure if we should?
+    ;;(when (looking-at "(")
+    ;;  (down-list))
+    (let ((err nil)
+          (forms '()))
+      ;; build a list of sexp start locations before the cursor position
+      ;; error on top-level form and continue
+      (while (not (eq err 1))
+        (condition-case nil
+            (backward-up-list)
+          (error (setq err 1)))
+        (add-to-list 'forms (point)))
+      ;; We're at the top-level defun now, check for comment
+      ;; This could check against a list of forms to ignore and
+      ;; climb up to the first not-ignored form
+      (if (check-ignored-forms ignored-forms) ;;(looking-at "(comment")
+          (if (or (eq 1 (length forms)) (null forms))
+              (message "No top level form, or top level form ignored.")
+            (progn
+              (goto-char (cadr forms))
+              (forward-sexp)
+              (funcall do-region (cadr forms) (point))))
+        (progn
+         (let ((start (point)))
+           (forward-sexp)
+           (funcall do-region start (point))))))))
+
+(defun clj-eval-defun (&optional and-go)
+  "Send the current defun to the inferior Lisp process.
+DEFVAR forms reset the variables to the init values.
+Prefix argument means switch to the Lisp buffer afterwards."
+  (interactive "P")
+  (clj-do-defun 'lisp-eval-string 'lisp-eval-region)
+  (if and-go (switch-to-lisp t)))
+
+(defun run-clojure (cmd)
+  (interactive (list
+                (if (boundp 'clj-repl-command)
+                    (let ((first-command (car clj-repl-command))
+                          (rest-commands (if clj-repl-command-history
+						                     (append (cdr clj-repl-command) clj-repl-command-history)
+						                   (cdr clj-repl-command))))
+                      (read-from-minibuffer "Command:" first-command nil nil 'rest-commands))
+                  (read-from-minibuffer "Command:" "clojure" nil nil 'clj-repl-command-history))))
+  (run-clojure-command cmd))
+
+(defun run-clojure-command (cmd)
+  (let ((dd (if (and (fboundp 'clojure-project-root-path)
+                     (stringp (clojure-project-root-path)))
+			    (clojure-project-root-path)
+			  default-directory))
+	    cb (curent-buffer))
+    (cd dd)
+    (add-to-list 'clj-repl-command-history cmd)
+    (if (boundp 'clj-environment)
+        (let ((process-environment (append process-environment clj-environment)))
+          (run-lisp cmd))
+      (run-lisp cmd))
+    (switch-to-buffer cb)
+    (switch-to-buffer-other-window "*inferior-lisp*")))
+>>>>>>> 7577a89 (clj ignore comment)
