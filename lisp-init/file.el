@@ -56,3 +56,4 @@
              '(git-gutter:added-sign "++") ;; multiple character is OK
              '(git-gutter:deleted-sign "--"))))
 
+(add-to-list 'auto-mode-alist '("\\.repl$\\'" . clojure-mode))
