@@ -3,8 +3,8 @@
 ;; (add-to-list 'load-path "/Users/robertrandolph/Documents/Clojure/inf-clojure")
 (use-package inf-clojure
   :config (progn
-            (define-key clojure-mode-map (kbd "C-M-x") 'inf-clojure-eval-defun) ;; primary eval command
-            (define-key clojure-mode-map (kbd "C-c C-e") 'inf-clojure-eval-defun)
+            (define-key clojure-mode-map (kbd "C-M-x") 'inf-clj-eval-defun) ;; primary eval command
+            (define-key clojure-mode-map (kbd "C-c C-e") 'inf-clj-eval-defun)
             (define-key clojure-mode-map (kbd "C-x C-e") 'inf-clojure-eval-last-sexp)
             (define-key clojure-mode-map (kbd "C-c C-l") 'inf-clojure-eval-buffer)
             (define-key clojure-mode-map (kbd "C-c C-r") 'inf-clojure-eval-region)
@@ -176,59 +176,20 @@
  (setq comint-scroll-to-bottom-on-output t)
  )
 
-<<<<<<< HEAD
-=======
-(use-package flycheck-clj-kondo)
 
-(defun lisp-mode-hooks ()
-  (electric-indent-mode)
-  (electric-pair-mode))
-
-(add-hook 'lisp-mode-hook 'lisp-mode-hooks)
-(add-hook 'lisp-interaction-mode-hook 'lisp-mode-hooks)
-(add-hook 'emacs-lisp-mode-hook 'lisp-mode-hooks)
-
-(defun clj-do-defun (do-string do-region)
-  "Send the current defun to the inferior Lisp process.
-The actually processing is done by `do-string' and `do-region'
- which determine whether the code is compiled before evaluation.
-DEFVAR forms reset the variables to the init values. Ignores (comment) forms."
-  (save-excursion
-    ;; Find the end of the defun this way to avoid having the region
-    ;; possibly end with a comment (it there'a a comment after the
-    ;; final parenthesis).
-    (beginning-of-defun)
-    (forward-sexp)
-    (let ((end (point))
-          (start ())
-          (case-fold-search t))
-      (beginning-of-defun)
-      (when (looking-at "(comment")
-        (down-list)
-        (down-list)
-        (backward-char)
-        (forward-sexp)
-        (setq end (point))
-        (backward-sexp))
-        (funcall do-region (point) end))))
-
-(setq ignored-forms '("comment" "+"))
+;; regex, not plain string
+;; TODO allow define in dir-local
+(defconst ignored-forms '("comment"))
 
 (defun check-ignored-forms (forms)
   (interactive "P")
   (let ((ret nil))
     (dolist (form ignored-forms)
-      (print (format "Looking at %s is %s" (concat "(" form) (looking-at (concat "(" form))))
       (when (looking-at (concat "(" form))
         (setq ret 't)))
-    (print ret)
     ret))
 
-
-(dolist (form ignored-forms)
-        (print form))
-
-(defun clj-do-defun (do-string do-region)
+(defun clj-do-defun (do-region)
   "Send the current defun to the inferior Lisp process.
 The actually processing is done by `do-string' and `do-region'
  which determine whether the code is compiled before evaluation.
@@ -244,7 +205,7 @@ DEFVAR forms reset the variables to the init values. Ignores (comment) forms."
       ;; error on top-level form and continue
       (while (not (eq err 1))
         (condition-case nil
-            (backward-up-list)
+            (backward-up-list nil t)
           (error (setq err 1)))
         (add-to-list 'forms (point)))
       ;; We're at the top-level defun now, check for comment
@@ -267,32 +228,13 @@ DEFVAR forms reset the variables to the init values. Ignores (comment) forms."
 DEFVAR forms reset the variables to the init values.
 Prefix argument means switch to the Lisp buffer afterwards."
   (interactive "P")
-  (clj-do-defun 'lisp-eval-string 'lisp-eval-region)
+  (clj-do-defun 'lisp-eval-region)
   (if and-go (switch-to-lisp t)))
 
-(defun run-clojure (cmd)
-  (interactive (list
-                (if (boundp 'clj-repl-command)
-                    (let ((first-command (car clj-repl-command))
-                          (rest-commands (if clj-repl-command-history
-						                     (append (cdr clj-repl-command) clj-repl-command-history)
-						                   (cdr clj-repl-command))))
-                      (read-from-minibuffer "Command:" first-command nil nil 'rest-commands))
-                  (read-from-minibuffer "Command:" "clojure" nil nil 'clj-repl-command-history))))
-  (run-clojure-command cmd))
-
-(defun run-clojure-command (cmd)
-  (let ((dd (if (and (fboundp 'clojure-project-root-path)
-                     (stringp (clojure-project-root-path)))
-			    (clojure-project-root-path)
-			  default-directory))
-	    cb (curent-buffer))
-    (cd dd)
-    (add-to-list 'clj-repl-command-history cmd)
-    (if (boundp 'clj-environment)
-        (let ((process-environment (append process-environment clj-environment)))
-          (run-lisp cmd))
-      (run-lisp cmd))
-    (switch-to-buffer cb)
-    (switch-to-buffer-other-window "*inferior-lisp*")))
->>>>>>> 7577a89 (clj ignore comment)
+(defun inf-clj-eval-defun (&optional and-go)
+  "Send the current defun to the inferior Lisp process.
+DEFVAR forms reset the variables to the init values.
+Prefix argument means switch to the Lisp buffer afterwards."
+  (interactive "P")
+  (clj-do-defun 'inf-clojure-eval-region)
+  (if and-go (switch-to-lisp t)))
