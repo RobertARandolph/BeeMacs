@@ -1,4 +1,4 @@
-;; LISP
+l;; LISP
 
 ;; (add-to-list 'load-path "/Users/robertrandolph/Documents/Clojure/inf-clojure")
 (use-package inf-clojure
@@ -148,19 +148,33 @@
 
  (defun run-clojure-command (cmd)
    (let ((dd (if (and (fboundp 'clojure-project-root-path)
-                      (stringp (clojure-project-root-path)))
-                 (clojure-project-root-path)
-               default-directory))
-         cb (curent-buffer))
-     (cd dd)
-     (add-to-list 'clj-repl-command-history cmd)
-     (if (boundp 'clj-environment)
-         (let ((process-environment (append process-environment clj-environment)))
-           (run-lisp cmd))
-       (run-lisp cmd))
-     (switch-to-buffer cb)
-     (switch-to-buffer-other-window "*inferior-lisp*")))
+                    (stringp (clojure-project-root-path)))
+               (clojure-project-root-path)
+             (let ((dir-locals-dir (car (dir-locals-find-file (buffer-file-name)))))
+               (if dir-locals-dir
+                   dir-locals-dir
+                 default-directory))))
+       (cb (current-buffer)))
+   (cd dd)
+   (add-to-list 'clj-repl-command-history cmd)
+   (run-lisp cmd)
+   (switch-to-buffer cb)
+   (switch-to-buffer-other-window "*inferior-lisp*")))
 
+ (let ((dd (if (and (fboundp 'clojure-project-root-path)
+                    (stringp (clojure-project-root-path)))
+               (clojure-project-root-path)
+             (let ((dir-locals-dir (car (dir-locals-find-file (buffer-file-name)))))
+               (if dir-locals-dir
+                   dir-locals-dir
+                 default-directory))))
+       (cb (current-buffer)))
+   (cd dd)
+   (add-to-list 'clj-repl-command-history cmd)
+   (run-lisp cmd)
+   (switch-to-buffer cb)
+   (switch-to-buffer-other-window "*inferior-lisp*"))
+ 
  (setq lisp-function-doc-command
        "(clojure.repl/doc %s)\n")
 
