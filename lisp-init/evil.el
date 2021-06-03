@@ -68,6 +68,11 @@
 
 (define-key evil-normal-state-map "go" 'evil-eval)
 
+(define-key evil-normal-state-map (kbd "*")
+  (lambda () (interactive) (swiper (format "\\<%s\\>" (thing-at-point 'symbol)))))
+(define-key evil-normal-state-map (kbd "#")
+  (lambda () (interactive) (swiper (format "\\<%s\\>" (thing-at-point 'word)))))
+
 ;; Write current EVIL state. Used for Talon
 
 (defun write-mode (mode)
