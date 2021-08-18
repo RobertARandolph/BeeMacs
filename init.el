@@ -35,7 +35,6 @@
  '(git-gutter:added-sign "++")
  '(git-gutter:deleted-sign "--")
  '(git-gutter:modified-sign "||")
- '(nil nil t)
  '(package-selected-packages
    '(wgrep which-key yasnippet company visual-regexp-steroids resize-window rainbow-delimiters magit lispyville key-chord flycheck-clj-kondo exec-path-from-shell evil-surround evil-snipe evil-matchit emmet-mode dumb-jump counsel-projectile clj-refactor bind-key auto-dim-other-buffers aggressive-indent ag adjust-parens)))
 (custom-set-faces

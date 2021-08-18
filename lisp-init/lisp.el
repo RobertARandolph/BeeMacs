@@ -1,4 +1,4 @@
-l;; LISP
+;; LISP
 
 ;; (add-to-list 'load-path "/Users/robertrandolph/Documents/Clojure/inf-clojure")
 (use-package inf-clojure
