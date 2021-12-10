@@ -79,10 +79,23 @@
             (require 'flycheck-clj-kondo)
             (define-key clojure-mode-map (kbd "C-z") 'run-clojure-no-prompt)
             (define-key clojure-mode-map (kbd "C-c C-z") 'run-clojure)
+            (define-key clojure-mode-map (kbd "C-c C-S-z") 'run-clojure-network)
             (define-key clojure-mode-map (kbd "C-M-x") 'clj-eval-defun) ;; primary eval command
             (define-key clojure-mode-map (kbd "C-M-S-x") 'clj-eval-defun-and-print)
-            (define-key clojure-mode-map (kbd "C-c C-e") 'lisp-eval-defun)
+            (define-key clojure-mode-map (kbd "C-c C-e") 'clj-eval-defun)
             (define-key clojure-mode-map (kbd "C-x C-e") 'lisp-eval-last-sexp)
+            (define-key clojure-mode-map (kbd "C-x C-S-e") 'clj-eval-last-sexp-and-print)
+            (define-key clojure-mode-map (kbd "C-c C-S-x") 'clj-eval-defun-and-print)
+            (define-key clojure-mode-map (kbd "C-c C-v") 'lisp-show-variable-documentation)
+            (define-key clojure-mode-map (kbd "C-c C-S-v") 'clj-show-variable-documentation-and-print)
+            (define-key clojure-mode-map (kbd "C-c C-f") 'lisp-show-function-documentation)
+            (define-key clojure-mode-map (kbd "C-c C-S-f") 'clj-show-function-documentation-and-print)
+            (define-key clojure-mode-map (kbd "C-c C-s") 'clj-show-function-source)
+            (define-key clojure-mode-map (kbd "C-c C-S-s") 'clj-show-function-source-and-print)
+            (define-key clojure-mode-map (kbd "C-c C-v") 'clj-show-var-source)
+            (define-key clojure-mode-map (kbd "C-c C-S-v") 'clj-show-var-source-and-print)
+            (define-key clojure-mode-map (kbd "C-c C-a") 'lisp-show-arglist)
+            (define-key clojure-mode-map (kbd "C-c C-S-a") 'clj-show-arglist-and-print)
             (define-key clojure-mode-map (kbd "C-c C-l") 'lisp-load-buffer)
             (define-key clojure-mode-map (kbd "C-c C-n") 'lisp-eval-form-and-next)
             (define-key clojure-mode-map (kbd "C-c C-p") 'lisp-eval-paragraph)
@@ -130,7 +143,7 @@
 ;; Buffer eval'd from
  (defvar clojure-current-buffer)
 ;; Point of end of function eval'd
- (defvar clojure-last-eval-function-end)
+ (defvar clojure-last-eval-end)
 
  (defvar clj-repl-command-history '())
 
@@ -146,15 +159,16 @@
   (if clojure-current-buffer ;; eval command sets the current buffer if it's an "print to buffer" type command
       (with-current-buffer clojure-current-buffer
         (save-excursion
-          (goto-char clojure-last-eval-function-end)
+          (goto-char clojure-last-eval-end)
           (let* ((output (replace-regexp-in-string "^" ";; " ;; add comments
                                                   (replace-regexp-in-string "^[^> \n]*>+:? *" "" str))) ;; remove prompt
                 (l (length output)))
             (insert (concat "\n\n"
                             (if (> (length output) 4)
                                 (substring output 0 (- l 4))
-                                output)))))))) ;; remove newline and spaces
-
+                              output))  ;; remove newline and spaces
+                    "\n")
+            (setq clojure-current-buffer nil)))))) ;; don't send next one out!
 
  (defun run-clojure-no-prompt ()
    (interactive)
@@ -211,26 +225,14 @@
      (switch-to-buffer cb)
      (switch-to-buffer-other-window "*inferior-lisp*")))
 
+(setq clj-function-source-command
+       "(clojure.repl/source %s)\n")
 
-;; (let ((dd (if (and (fboundp 'clojure-project-root-path)
-;;                    (stringp (clojure-project-root-path)))
-;;               (clojure-project-root-path)
-;;             (let ((dir-locals-dir (car (dir-locals-find-file (buffer-file-name)))))
-;;               (if dir-locals-dir
-;;                   dir-locals-dir
-;;                 default-directory))))
-;;       (cb (current-buffer)))
-;;   (cd dd)
-;;   (add-to-list 'clj-repl-command-history cmd)
-;;   (run-lisp cmd)
-;;   (switch-to-buffer cb)
-;;   (switch-to-buffer-other-window "*inferior-lisp*"))
- 
  (setq lisp-function-doc-command
        "(clojure.repl/doc %s)\n")
 
- (setq lisp-show-variable-documentation
-       "(clojure.repl/doc %s)\n")
+(setq lisp-var-doc-command
+      "(clojure.repl/doc %s)\n")
 
  (setq lisp-arglist-command
        "(str \"%1$s args: \"
@@ -240,8 +242,6 @@
  ;; make inferior-lisp repl scroll on new output
  (setq comint-scroll-to-bottom-on-output t)
  
-
-
 ;; regex, not plain string
 ;; TODO allow define in dir-local
 (defconst ignored-forms '("comment"))
@@ -282,12 +282,12 @@ DEFVAR forms reset the variables to the init values. Ignores (comment) forms."
             (progn
               (goto-char (cadr forms))
               (forward-sexp)
-              (setq clojure-last-eval-function-end (point)) ;; set function end for eval-and-print
+              (setq clojure-last-eval-end (point)) ;; set function end for eval-and-print
               (funcall do-region (cadr forms) (point))))
         (progn
          (let ((start (point)))
            (forward-sexp)
-           (setq clojure-last-eval-function-end (point)) ;; set function end for eval-and-print
+           (setq clojure-last-eval-end (point)) ;; set function end for eval-and-print
            (funcall do-region start (point))))))))
 
 (defun clj-eval-defun (&optional and-go buf)
@@ -299,13 +299,6 @@ Prefix argument means switch to the Lisp buffer afterwards."
   (clj-do-defun 'clj-eval-region)
   (if and-go (switch-to-lisp t)))
 
-(defun clj-eval-defun-and-print (&optional and-go)
-  "Send the current defun to the inferior Lisp process.
-DEFVAR forms reset the variables to the init values.
-Prefix argument means switch to the Lisp buffer afterwards."
-  (interactive "P")
-  (clj-eval-defun and-go (current-buffer)))
-
 (defun clj-eval-region (start end &optional and-go)
   "Send the current region to the inferior Lisp process.
 Prefix argument means switch to the Lisp buffer afterwards."
@@ -313,6 +306,76 @@ Prefix argument means switch to the Lisp buffer afterwards."
   (comint-send-region (inferior-lisp-proc) start end)
   (comint-send-string (inferior-lisp-proc) "\n")
   (if and-go (switch-to-lisp t)))
+
+(defun clj-eval-defun-and-print (&optional and-go)
+  "Send the current defun to the inferior Lisp process.
+DEFVAR forms reset the variables to the init values.
+Prefix argument means switch to the Lisp buffer afterwards."
+  (interactive "P")
+  (clj-eval-defun and-go (current-buffer)))
+
+(defun clj-eval-last-sexp (&optional and-go buf)
+  "Send the current defun to the inferior Lisp process.
+DEFVAR forms reset the variables to the init values.
+Prefix argument means switch to the Lisp buffer afterwards."
+  (interactive "P")
+  (setq clojure-current-buffer buf) ;; comint-output-filter prints to sending buffer if this is a buffer
+  (setq clojure-last-eval-end (point))
+  (clj-eval-region (save-excursion (backward-sexp) (point)) (point) and-go)
+  (if and-go (switch-to-lisp t)))
+
+(defun clj-eval-last-sexp-and-print (&optional and-go)
+  "Send the current defun to the inferior Lisp process.
+DEFVAR forms reset the variables to the init values.
+Prefix argument means switch to the Lisp buffer afterwards."
+  (interactive "P")
+  (clj-eval-last-sexp and-go (current-buffer)))
+
+(defun clj-show-function-source (fn)
+  (interactive (lisp-symprompt "Function source" (lisp-fn-called-at-pt)))
+  (comint-proc-query (inferior-lisp-proc)
+                     (format clj-function-source-command fn)) )
+
+(defun clj-show-function-source-and-print (fn)
+  (interactive (lisp-symprompt "Function source" (lisp-fn-called-at-pt)))
+  (setq clojure-current-buffer (current-buffer)) ;; comint-output-filter prints to sending buffer if this is a buffer
+  (setq clojure-last-eval-end (point))
+  (comint-proc-query (inferior-lisp-proc)
+                     (format clj-function-source-command fn)) )
+
+(defun clj-show-var-source (fn)
+  (interactive (lisp-symprompt "Var source" (lisp-var-at-pt)))
+  (comint-proc-query (inferior-lisp-proc)
+                     (format clj-function-source-command fn)) )
+
+(defun clj-show-var-source-and-print (fn)
+  (interactive (lisp-symprompt "Var source" (lisp-var-at-pt)))
+  (setq clojure-current-buffer (current-buffer)) ;; comint-output-filter prints to sending buffer if this is a buffer
+  (setq clojure-last-eval-end (line-end-position))
+  (comint-proc-query (inferior-lisp-proc)
+                     (format clj-function-source-command fn)) )
+
+(defun clj-show-function-documentation-and-print ()
+  (interactive)
+  (setq clojure-current-buffer (current-buffer)) ;; comint-output-filter prints to sending buffer if this is a buffer
+  (setq clojure-last-eval-end (line-end-position))
+  (call-interactively 'lisp-show-function-documentation))
+
+(defun clj-show-variable-documentation-and-print ()
+  (interactive)
+  (setq clojure-current-buffer (current-buffer)) ;; comint-output-filter prints to sending buffer if this is a buffer
+  (setq clojure-last-eval-end (line-end-position))
+  (call-interactively 'lisp-show-variable-documentation))
+
+(defun clj-show-arglist-and-print ()
+  (interactive)
+  (setq clojure-current-buffer (current-buffer)) ;; comint-output-filter prints to sending buffer if this is a buffer
+  (setq clojure-last-eval-end (line-end-position))
+  (call-interactively 'lisp-show-arglist))
+
+;; add print to other cmds
+
+;; source to repl?
 
 (defun inf-clj-eval-defun (&optional and-go)
   "Send the current defun to the inferior Lisp process.
