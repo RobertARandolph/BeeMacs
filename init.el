@@ -7,11 +7,19 @@
   (package-initialize)
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
+
+  (unless (package-installed-p 'gnu-elpa-keyring-update)
+    (package-install 'gnu-elpa-keyring-update))
+(use-package gnu-elpa-keyring-update)
   (require 'use-package))
 
 ;; always ensure!
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
+
+;; Fix elpa signature nonsense
+;; (setq package-check-signature nil)
+;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 (defmacro comment (&rest body)
   "Comment out one or more s-expressions."
@@ -35,8 +43,10 @@
  '(git-gutter:added-sign "++")
  '(git-gutter:deleted-sign "--")
  '(git-gutter:modified-sign "||")
+ '(nil nil t)
  '(package-selected-packages
-   '(pcre2el wgrep which-key yasnippet company visual-regexp-steroids resize-window rainbow-delimiters magit lispyville key-chord flycheck-clj-kondo exec-path-from-shell evil-surround evil-snipe evil-matchit emmet-mode dumb-jump counsel-projectile clj-refactor bind-key auto-dim-other-buffers aggressive-indent ag adjust-parens)))
+   '(dash clojure-mode gnu-elpa-keyring-update lsp-mode dap-mode pcre2el wgrep which-key yasnippet company visual-regexp-steroids resize-window rainbow-delimiters magit lispyville key-chord flycheck-clj-kondo exec-path-from-shell evil-surround evil-snipe evil-matchit emmet-mode dumb-jump counsel-projectile clj-refactor bind-key auto-dim-other-buffers aggressive-indent ag adjust-parens))
+ '(warning-suppress-types '((comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
