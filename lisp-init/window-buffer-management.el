@@ -15,3 +15,7 @@
 (use-package auto-dim-other-buffers
   :config (auto-dim-other-buffers-mode t)
   :custom-face (auto-dim-other-buffers-face ((t (:background "#222")))))
+
+(global-linum-mode)
+(global-display-line-numbers-mode 1)
+(setq-default display-line-numbers-type 'relative)

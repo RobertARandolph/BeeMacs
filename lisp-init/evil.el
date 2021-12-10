@@ -100,13 +100,13 @@
           (lambda ()
             (write-mode "normal")))
 
-(add-hook 'evil-insert-state-exit-hook
-          (lambda ()
-            (setq display-line-numbers 'relative)))
-
-(add-hook 'evil-insert-state-entry-hook
-          (lambda ()
-            (setq display-line-numbers t)))
+;; (add-hook 'evil-insert-state-exit-hook
+;;           (lambda ()
+;;             (setq display-line-numbers 'relative)))
+;; 
+;; (add-hook 'evil-insert-state-entry-hook
+;;           (lambda ()
+;;             (setq display-line-numbers t)))
 
 (use-package key-chord
              ;; hl acts as 'escape'
