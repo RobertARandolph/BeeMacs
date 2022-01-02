@@ -25,13 +25,19 @@
   "Comment out one or more s-expressions."
   nil)
 
+(defconst load-ignore-files '("my-lisp.el"))
+
 ;; Load my elisp stuff
 (defun load-directory (dir)
   (let ((load-it (lambda (f)
-		           (load-file (concat (file-name-as-directory dir) f)))))
-	(mapc load-it (directory-files dir nil "\\.el$"))))
+		           (load-file (concat (file-name-as-directory dir) f))))
+        (files (cl-set-exclusive-or load-ignore-files (directory-files dir nil "\\.el$") :test 'string=)))
+    (mapc load-it files)))
+
+(setq dir "~/.emacs.d/lisp-init")
 
 (load-directory "~/.emacs.d/lisp-init")
+
 
 ;(require 'which-key)
 
@@ -45,7 +51,7 @@
  '(git-gutter:modified-sign "||")
  '(nil nil t)
  '(package-selected-packages
-   '(dash clojure-mode gnu-elpa-keyring-update lsp-mode dap-mode pcre2el wgrep which-key yasnippet company visual-regexp-steroids resize-window rainbow-delimiters magit lispyville key-chord flycheck-clj-kondo exec-path-from-shell evil-surround evil-snipe evil-matchit emmet-mode dumb-jump counsel-projectile clj-refactor bind-key auto-dim-other-buffers aggressive-indent ag adjust-parens))
+   '(cider wgrep which-key yasnippet company visual-regexp-steroids resize-window rainbow-delimiters magit lispyville key-chord flycheck-clj-kondo exec-path-from-shell evil-surround evil-snipe evil-matchit emmet-mode dumb-jump counsel-projectile clj-refactor bind-key auto-dim-other-buffers aggressive-indent ag adjust-parens))
  '(warning-suppress-types '((comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
