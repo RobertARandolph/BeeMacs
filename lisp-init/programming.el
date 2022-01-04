@@ -17,9 +17,7 @@
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (clojure-mode . lsp)
-         (clojurescript-mode . lsp)
-         ;; if you want which-key integration
-         (lsp-mode . lsp-enable-which-key-integration))
+         (clojurescript-mode . lsp))
   :commands lsp)
 
 (setq gc-cons-threshold (* 100 1024 1024)
