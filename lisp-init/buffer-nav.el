@@ -30,7 +30,7 @@
                   :end end)))))
 (add-to-list 'avy-orders-alist '(avy-goto-parens . avy-order-closest))
 
-(global-set-key (kbd "s-p") 'avy-goto-parens)
+(global-set-key (kbd "C-s-p") 'avy-goto-parens)
 
 (comment (use-package which-key
    :after evil
