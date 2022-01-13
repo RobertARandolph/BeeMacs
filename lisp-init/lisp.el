@@ -4,12 +4,12 @@
   :ensure t
   :config (progn
             (require 'flycheck-clj-kondo)
-            (setq cider-print-fn "fipp")
+            (setq cider-print-fn 'fipp)
             (define-key clojure-mode-map (kbd "C-z") 'cider-jack-in-clj)
             (define-key clojure-mode-map (kbd "C-c C-z") 'cider-jack-in)
             (define-key clojure-mode-map (kbd "C-M-x") 'cider-eval-defun-to-comment) ;; primary eval command
             (define-key cider-mode-map (kbd "C-M-S-x") 'cider-pprint-eval-defun-to-comment)
-            (define-key cider-mode-map (kbd "C-c C-e") 'cider-eval-defun-to-commen)
+            (define-key cider-mode-map (kbd "C-c C-e") 'cider-eval-defun-to-comment)
             (define-key cider-mode-map (kbd "C-x C-e") 'cider-eval-last-sexp)
             (define-key cider-mode-map (kbd "C-x C-S-e") 'cider-pprint-eval-last-sexp)
             (define-key cider-mode-map (kbd "C-c C-v") 'cider-doc)
@@ -24,6 +24,8 @@
             (define-key cider-mode-map (kbd "C-c C-S-a") 'cider-doc)
             (define-key cider-mode-map (kbd "C-c C-l") 'cider-load-buffer)
             (define-key cider-mode-map (kbd "C-c C-r") 'cider-eval-region)
+            (define-key cider-mode-map (kbd "C-c f") 'lsp-find-references)
+            (define-key cider-mode-map (kbd "C-c n") 'cider-repl-set-ns)
             (setq clojure-refactor-map-prefix (kbd "s-l"))
             (defvar clojure-refactor-map
               (let ((map (make-sparse-keymap)))
