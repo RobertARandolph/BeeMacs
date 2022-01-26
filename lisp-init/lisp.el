@@ -3,8 +3,8 @@
 (use-package cider
   :ensure t
   :config (progn
-            (require 'flycheck-clj-kondo)
             (setq cider-print-fn 'fipp)
+            (setq clojure-toplevel-inside-comment-form t)
             (define-key clojure-mode-map (kbd "C-z") 'cider-jack-in-clj)
             (define-key clojure-mode-map (kbd "C-c C-z") 'cider-jack-in)
             (define-key clojure-mode-map (kbd "C-M-x") 'cider-eval-defun-to-comment) ;; primary eval command
