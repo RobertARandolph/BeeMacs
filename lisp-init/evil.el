@@ -48,10 +48,8 @@
 ;; Enable copy/paste from clipboard
 ;; Grabbed from https://github.com/syl20bnr/spacemacs/issues/5750 and modified to work
 (define-key evil-visual-state-map  (kbd "s-c") (kbd "\"+y"))
-(define-key evil-insert-state-map  (kbd "s-v") (kbd "C-r +"))
-(define-key evil-ex-completion-map (kbd "s-v") (kbd "C-r +"))
-(define-key evil-normal-state-map  (kbd "s-v") (kbd "\"+p"))
-(define-key evil-ex-search-keymap  (kbd "s-v") (kbd "C-r +"))
+(define-key evil-insert-state-map  (kbd "s-v") 'clipboard-yank)
+
 
 (evil-define-operator evil-eval (beg end)
   "Eval the text"
