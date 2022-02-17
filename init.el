@@ -51,7 +51,7 @@
  '(git-gutter:modified-sign "||")
  '(nil nil t)
  '(package-selected-packages
-   '(cider wgrep which-key yasnippet company visual-regexp-steroids resize-window rainbow-delimiters magit lispyville key-chord flycheck-clj-kondo exec-path-from-shell evil-surround evil-snipe evil-matchit emmet-mode dumb-jump counsel-projectile clj-refactor bind-key auto-dim-other-buffers aggressive-indent ag adjust-parens))
+   '(cider lsp-ui lsp-treemacs lsp-ivy dash clojure-mode gnu-elpa-keyring-update lsp-mode dap-mode pcre2el wgrep which-key yasnippet company visual-regexp-steroids resize-window rainbow-delimiters magit lispyville key-chord flycheck-clj-kondo exec-path-from-shell evil-surround evil-snipe evil-matchit emmet-mode dumb-jump counsel-projectile clj-refactor bind-key auto-dim-other-buffers aggressive-indent ag adjust-parens))
  '(warning-suppress-types '((comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
