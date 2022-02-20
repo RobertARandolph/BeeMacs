@@ -1,6 +1,20 @@
 (setq cider-print-fn "clojure.core/pprint")
 
+(use-package flycheck-clj-kondo
+  :ensure t)
+
 (use-package clj-refactor)
+
+(defun clojure-mode-hooks ()
+  (clj-refactor-mode 1)
+  (cljr-add-keybindings-with-prefix "s-l"))
+
+(defun lisp-mode-hooks ()
+  (electric-indent-mode)
+  (electric-pair-mode))
+
+(use-package clojure-mode
+  :hook (lisp-mode-hooks . clojure-mode-hook))
 
 (use-package cider
   :ensure t
@@ -28,21 +42,10 @@
             (define-key cider-mode-map (kbd "C-c C-r") 'cider-eval-region)
             (define-key cider-mode-map (kbd "C-c f") 'lsp-find-references)
             (define-key cider-mode-map (kbd "C-c n") 'cider-repl-set-ns)
-            (define-key clojure-mode-map clojure-refactor-map-prefix 'clojure-refactor-map)
             ;;(define-key clojure-mode-map (kbd "C-c C-z") 'inf-clojure)
-            (add-hook 'clojure-mode-hook 'lisp-mode-hooks)
-            (add-hook 'clojure-mode-hook 'clojure-mode-hooks)))
-
+            ))
 (setq cider-jump-to-pop-to-buffer-actions
       '((display-buffer-same-window)))
-
-(defun clojure-mode-hooks ()
-  (clj-refactor-mode 1)
-  (cljr-add-keybindings-with-prefix "s-l"))
-
-(defun lisp-mode-hooks ()
-  (electric-indent-mode)
-  (electric-pair-mode))
 
 (setq clojure-align-forms-automatically t)
 

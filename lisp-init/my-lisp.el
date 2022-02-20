@@ -1,8 +1,5 @@
 ;; LISP
 
-(use-package flycheck-clj-kondo
-  :ensure t)
-
 ;; (add-to-list 'load-path "/Users/robertrandolph/Documents/Clojure/inf-clojure")
 ;;(use-package inf-clojure
 ;;  :config (progn
