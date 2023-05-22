@@ -1,7 +1,5 @@
 (setq cider-print-fn "clojure.core/pprint")
 
-(use-package clj-refactor)
-
 (use-package cider
   :ensure t
   :config (progn
@@ -30,17 +28,14 @@
             (define-key cider-mode-map (kbd "C-c n") 'cider-repl-set-ns)
             (define-key clojure-mode-map clojure-refactor-map-prefix 'clojure-refactor-map)
             ;;(define-key clojure-mode-map (kbd "C-c C-z") 'inf-clojure)
-            (add-hook 'clojure-mode-hook 'lisp-mode-hooks)
-            (add-hook 'clojure-mode-hook 'clojure-mode-hooks)))
+            (add-hook 'clojure-mode-hook 'lisp-mode-hooks)))
 
 (setq cider-jump-to-pop-to-buffer-actions
       '((display-buffer-same-window)))
 
-(defun clojure-mode-hooks ()
-  (clj-refactor-mode 1)
-  (cljr-add-keybindings-with-prefix "s-l"))
-
 (defun lisp-mode-hooks ()
+  (cljr-add-keybindings-with-prefix "s-l")k
+  (clj-refactor-mode 1)
   (electric-indent-mode)
   (electric-pair-mode))
 
