@@ -24,7 +24,7 @@
 	     ("C-c p" . 'counsel-yank-pop)
 	     ("C-c g" . 'counsel-git)
 	     ("C-c j" . 'counsel-git-grep)
-	     ("C-c k" . 'counsel-rg)
+	     ("C-c k" . (lambda () (interactive) (counsel-rg nil nil "--max-columns 0" nil)))
 	     ("C-x l" . 'counsel-locate)
 	     ("C-S-o" . 'counsel-rhythmbox)
 	     :map minibuffer-local-map
